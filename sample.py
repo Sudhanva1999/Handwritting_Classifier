@@ -15,9 +15,9 @@ import tensorflow.keras.backend as K
 from keras.models import load_model
 
 def getAuthor(p,labels):
-    print("------------------------",p[0])
     max1=p[0]
     count=0
+    index=count
     for i in p:
         if i>max1:
             max1=i 
@@ -28,7 +28,7 @@ def getAuthor(p,labels):
 
 print(keras.__version__)
 # model = load_model("model.h5")
-file1 = open('labels.txt', 'r') 
+file1 = open('labels1.txt', 'r') 
 count = 0
 labels=[]
 while True: 
@@ -39,13 +39,18 @@ while True:
     labels.append(line.strip())
 file1.close() 
 # print(labels)
-image_raw = cv2.imread("a01-049x-s01-01.png", cv2.IMREAD_GRAYSCALE)
-image = cv2.resize(image_raw, (1000, 100))
+img_names = os.listdir('sampleData/')
+model =tf.keras.models.load_model("model_25e_96.h5")
+n=1
+
+pp='sampleData/' 
+image_raw = cv2.imread('sampleData/MYD-VARU-207-32.PNG', cv2.IMREAD_GRAYSCALE)
+image = cv2.resize(image_raw, (200, 100))
 img_array = img_to_array(image)
 img_batch = np.expand_dims(img_array, axis=0)
-model =tf.keras.models.load_model("model.h5")
 p=model.predict(img_batch)
-for i in p:
-    predictions=i.tolist()
+for l in p:
+    predictions=l.tolist()
 auth,probability=getAuthor(predictions,labels)
-print(auth,probability)
+print(pp,n,auth,probability)
+
